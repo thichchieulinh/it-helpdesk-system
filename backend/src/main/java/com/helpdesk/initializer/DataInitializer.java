@@ -28,6 +28,9 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
+        // Đồng bộ hoặc cập nhật tài khoản cũ nếu có sẵn trong DB
+        updateOrMigrateAccounts();
+
         if (userRepository.count() > 0) {
             log.info("Du lieu mau da ton tai trong co so du lieu H2 local, bo qua buoc khoi tao.");
             return;
@@ -35,28 +38,28 @@ public class DataInitializer implements CommandLineRunner {
 
         log.info("Bat dau khoi tao du lieu mau cho he thong IT Helpdesk...");
 
-        // 1. Khoi tao 3 User dai dien 3 Role
+        // 1. Khoi tao 3 User dai dien 3 Role (Tai khoan - Mat khau: emp/emp, agent/agent, admin/admin)
         User employee = User.builder()
-                .username("emp_nam")
-                .password("123456")
+                .username("emp")
+                .password("emp")
                 .fullName("Nguyễn Văn Nam")
-                .email("nam.nv@company.com")
+                .email("emp@company.com")
                 .department("Kế toán")
                 .role(Role.EMPLOYEE)
                 .build();
 
         User agent = User.builder()
-                .username("agent_hoa")
-                .password("123456")
+                .username("agent")
+                .password("agent")
                 .fullName("Trần Thị Hoa")
-                .email("hoa.tt@company.com")
+                .email("agent@company.com")
                 .department("IT Support")
                 .role(Role.AGENT)
                 .build();
 
         User admin = User.builder()
-                .username("admin_quang")
-                .password("123456")
+                .username("admin")
+                .password("admin")
                 .fullName("Lê Nhật Quang")
                 .email("admin@company.com")
                 .department("IT Management")
@@ -64,7 +67,7 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         userRepository.saveAll(List.of(employee, agent, admin));
-        log.info("Da khoi tao 3 User thanh cong.");
+        log.info("Da khoi tao 3 User (emp, agent, admin) thanh cong.");
 
         // 2. Khoi tao 4 Category
         Category catSoftware = Category.builder()
@@ -241,5 +244,29 @@ public class DataInitializer implements CommandLineRunner {
         commentRepository.saveAll(List.of(comment1, comment2, comment3, comment4));
 
         log.info("Da khoi tao 5 Ticket mau va cac Comment tuong ung thanh cong.");
+    }
+
+    private void updateOrMigrateAccounts() {
+        userRepository.findByUsername("emp_nam").ifPresent(u -> {
+            u.setUsername("emp");
+            u.setPassword("emp");
+            u.setEmail("emp@company.com");
+            userRepository.save(u);
+            log.info("Da chuyen doi tai khoan emp_nam thanh emp/emp");
+        });
+        userRepository.findByUsername("agent_hoa").ifPresent(u -> {
+            u.setUsername("agent");
+            u.setPassword("agent");
+            u.setEmail("agent@company.com");
+            userRepository.save(u);
+            log.info("Da chuyen doi tai khoan agent_hoa thanh agent/agent");
+        });
+        userRepository.findByUsername("admin_quang").ifPresent(u -> {
+            u.setUsername("admin");
+            u.setPassword("admin");
+            u.setEmail("admin@company.com");
+            userRepository.save(u);
+            log.info("Da chuyen doi tai khoan admin_quang thanh admin/admin");
+        });
     }
 }

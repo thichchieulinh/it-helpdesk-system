@@ -140,18 +140,18 @@ Hệ thống được thiết kế dạng CSDL quan hệ chuẩn 3NF:
 
 ### 5.1. Phân quyền vai trò (Role-Based Access Control)
 Hệ thống thiết lập 3 vai trò có phân chia màn hình và quyền hạn chặt chẽ:
-1. **EMPLOYEE (Nhân viên - Demo: `emp_nam` / `123456`)**:
+1. **EMPLOYEE (Nhân viên - Tài khoản: `emp` / `emp`)**:
    - Chỉ xem và quản lý các yêu cầu do chính mình tạo.
    - Gửi yêu cầu hỗ trợ mới qua Modal.
    - Tham gia bình luận sự cố và bấm nút "Xác nhận đóng phiếu" khi hài lòng.
    - **Bảo mật Navbar**: Không nhìn thấy menu "Người dùng & phòng ban".
-2. **AGENT (Kỹ thuật viên IT - Demo: `agent_hoa` / `123456`)**:
+2. **AGENT (Kỹ thuật viên IT - Tài khoản: `agent` / `agent`)**:
    - Xem hàng đợi sự cố toàn công ty (*Tất cả ticket*, *Của tôi*, *Chưa phân công*).
    - Nút thao tác nghiệp vụ: "Tiếp nhận xử lý" (gán cho tôi), "Đánh dấu Đã giải quyết", "Mở lại yêu cầu".
    - Trao đổi bình luận kỹ thuật với người dùng.
    - Xem Dashboard KPI và Danh mục dịch vụ.
    - **Bảo mật Navbar**: Không nhìn thấy menu "Người dùng & phòng ban".
-3. **ADMIN (Quản trị viên - Demo: `admin_quang` / `123456`)**:
+3. **ADMIN (Quản trị viên - Tài khoản: `admin` / `admin`)**:
    - Toàn bộ quyền của Agent.
    - **Độc quyền quản trị**: Được phép nhìn thấy và truy cập menu **"Người dùng & phòng ban" (`/users`)** để cấp tài khoản mới và xóa tài khoản.
    - Xem toàn bộ Báo cáo phân tích hiệu năng (`/reports`), Dashboard KPI và quản lý chính sách SLA (`/sla-policies`).

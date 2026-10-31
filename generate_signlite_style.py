@@ -421,7 +421,7 @@ def build_signlite_style_report():
         ("Hình 2.3 Sơ đồ Use Case của các chức năng HelpdeskIT hiện tại", "15"),
         ("Hình 2.4 Kiến trúc HelpdeskIT trong môi trường local và LAN", "18"),
         ("Hình 2.5 Mô hình dữ liệu của hệ thống HelpdeskIT", "20"),
-        ("Hình 2.6 Giao diện đăng nhập và chuyển nhanh vai trò demo", "23"),
+        ("Hình 2.6 Giao diện đăng nhập hệ thống HelpdeskIT chuẩn Enterprise 2D", "23"),
         ("Hình 2.7 Giao diện Danh sách yêu cầu đa góc nhìn", "24"),
         ("Hình 2.8 Trình tự tạo ticket và tự động tính hạn chót SLA", "25"),
         ("Hình 2.9 Giao diện ngăn trượt chi tiết TicketDetailDrawer", "26"),
@@ -580,7 +580,7 @@ def build_signlite_style_report():
     add_heading_3(doc, "2.2.2 Yêu cầu và trạng thái chức năng")
     add_table_caption(doc, "Bảng 2.2 Yêu cầu chức năng đã hoàn thành trong phạm vi thực hành")
     tb22_data = [
-        ("FR01", "Xác thực & phân quyền", "Đăng nhập bằng tài khoản/mật khẩu; hỗ trợ 3 nút chuyển nhanh vai trò demo."),
+        ("FR01", "Xác thực & phân quyền", "Đăng nhập bằng tài khoản và mật khẩu theo vai trò; thiết kế chuẩn Enterprise 2D."),
         ("FR02", "Quản lý danh mục", "Xem danh sách, tìm kiếm và tạo mới nhóm sự cố (/categories)."),
         ("FR03", "Quản trị người dùng", "Xem danh sách, lọc vai trò, tạo mới và xóa tài khoản; bảo vệ quyền Admin trên Navbar."),
         ("FR04", "Tạo ticket & Tính SLA", "Tạo ticket mới, tự sinh mã HD-xxxx, tự động tính hạn chót dueDate = createdAt + SLA."),
@@ -639,9 +639,9 @@ def build_signlite_style_report():
     add_body_p(doc, "Khi tạo ticket hoặc cập nhật trạng thái, thao tác được bọc trong giao dịch Spring @Transactional để đảm bảo tính trọn vẹn: nếu có lỗi phát sinh, hệ thống rollback về trạng thái trước đó. Khóa ngoại đảm bảo không thể tạo ticket với danh mục hoặc người dùng không tồn tại.")
 
     add_heading_2(doc, "2.6 Xác thực người dùng và phân quyền theo vai trò")
-    add_body_p(doc, "Phân hệ xác thực (/login) quản lý đăng nhập và phiên làm việc. Nhằm phục vụ kiểm thử nhanh, giao diện tích hợp 3 thẻ chuyển nhanh tài khoản demo đại diện 3 vai trò: Nhân viên (emp_nam), Kỹ thuật viên (agent_hoa), Quản trị viên (admin_quang). Thông tin đăng nhập được lưu vào localStorage qua React AuthContext.")
+    add_body_p(doc, "Phân hệ xác thực (/login) quản lý đăng nhập và phiên làm việc theo quy chuẩn Enterprise 2D Design System. Hệ thống hỗ trợ các tài khoản mặc định đại diện cho 3 vai trò: Nhân viên (emp/emp), Kỹ thuật viên IT (agent/agent), Quản trị viên (admin/admin). Thông tin đăng nhập được lưu vào localStorage qua React AuthContext và kiểm tra phân quyền chặt chẽ trên toàn bộ tuyến đường (routes) của ứng dụng.")
 
-    add_figure_box(doc, "GIAO DIỆN ĐĂNG NHẬP VÀ CHUYỂN NHANH VAI TRÒ DEMO", "Hình 2.6 Giao diện đăng nhập và chuyển nhanh vai trò demo")
+    add_figure_box(doc, "GIAO DIỆN ĐĂNG NHẬP HỆ THỐNG HELPDESKIT CHUẨN ENTERPRISE 2D", "Hình 2.6 Giao diện đăng nhập hệ thống HelpdeskIT chuẩn Enterprise 2D")
 
     add_heading_2(doc, "2.7 Quản lý yêu cầu hỗ trợ và luồng trạng thái")
     add_heading_3(doc, "2.7.1 Hàng đợi ticket đa góc nhìn")
@@ -694,7 +694,7 @@ def build_signlite_style_report():
 
     add_table_caption(doc, "Bảng 2.6 Tổng hợp kết quả kiểm thử HelpdeskIT")
     tb26_data = [
-        ("Xác thực", "Đăng nhập hợp lệ bằng 3 vai trò demo", "Chuyển đúng trang, lưu session vào AuthContext; đạt 3/3 ca."),
+        ("Xác thực", "Đăng nhập hợp lệ bằng 3 vai trò (emp, agent, admin)", "Chuyển đúng trang, lưu session vào AuthContext; đạt 3/3 ca."),
         ("Tạo ticket", "Tạo ticket với 4 mức ưu tiên", "Sinh mã HD-xxxx, tính dueDate chính xác theo SLA; đạt 4/4 ca."),
         ("Bảo vệ dữ liệu", "Bỏ trống tiêu đề hoặc chọn thiếu danh mục", "Bắt lỗi tại giao diện, không gửi request lỗi; đạt 2/2 ca."),
         ("Drawer tương tác", "Mở drawer, tiếp nhận xử lý, gửi bình luận", "Trạng thái cập nhật tức thì, không chuyển trang; đạt 3/3 ca."),

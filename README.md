@@ -82,9 +82,9 @@ npm run dev
 
 | Vai trò | Tên đăng nhập | Mật khẩu | Phạm vi quyền |
 |---|---|---|---|
-| **Quản trị viên (Admin)** | `admin_quang` | `123456` | Toàn quyền hệ thống, quản trị User & SLA |
-| **Kỹ thuật viên (Agent)** | `agent_hoa` | `123456` | Xử lý hàng đợi ticket, xem Dashboard |
-| **Nhân viên (Employee)** | `emp_nam` | `123456` | Tạo ticket cá nhân, bình luận, đóng ticket |
+| **Quản trị viên (Admin)** | `admin` | `admin` | Toàn quyền hệ thống, quản trị User & SLA |
+| **Kỹ thuật viên (Agent)** | `agent` | `agent` | Xử lý hàng đợi ticket, xem Dashboard |
+| **Nhân viên (Employee)** | `emp` | `emp` | Tạo ticket cá nhân, bình luận, đóng ticket |
 
 ---
 
