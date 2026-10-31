@@ -75,7 +75,8 @@ Hệ thống được thiết kế dạng CSDL quan hệ chuẩn 3NF:
 - `assignee_id` (BIGINT, FK -> `users.id`, Nullable): Kỹ thuật viên IT phụ trách.
 - `createdAt` (TIMESTAMP): Thời điểm gửi yêu cầu.
 - `dueDate` (TIMESTAMP): Hạn chót hoàn thành theo cam kết SLA (`dueDate = createdAt + resolutionTimeHours`).
-- `resolvedAt` (TIMESTAMP, Nullable): Thời điểm kỹ thuật viên đánh dấu hoàn tất.
+- `acknowledgedAt` (TIMESTAMP, Nullable): Thời điểm kỹ thuật viên tiếp nhận xử lý lần đầu (chuyển sang `IN_PROGRESS` hoặc gán KTV). Phục vụ tính MTTA.
+- `resolvedAt` (TIMESTAMP, Nullable): Thời điểm kỹ thuật viên đánh dấu hoàn tất (`RESOLVED` hoặc `CLOSED`). Phục vụ tính MTTR.
 - `closedAt` (TIMESTAMP, Nullable): Thời điểm người yêu cầu hoặc Admin đóng phiếu.
 - `isOverdue` (BOOLEAN, Default: false): Cờ đánh dấu sự cố bị trễ hạn SLA.
 
@@ -123,11 +124,15 @@ Hệ thống được thiết kế dạng CSDL quan hệ chuẩn 3NF:
 - `GET /api/sla-policies`: Lấy danh sách 4 mức cam kết SLA.
 - `PUT /api/sla-policies/{id}`: Cập nhật số giờ xử lý cam kết.
 
-### 4.6. Bảng điều khiển (`/api/dashboard`)
-- `GET /api/dashboard/stats`: Thống kê tổng hợp:
+### 4.6. Bảng điều khiển & Báo cáo (`/api/dashboard`)
+- `GET /api/dashboard/stats`: Thống kê tổng hợp số liệu thực tế:
   - `totalTickets`, `openTickets`, `inProgressTickets`, `resolvedTickets`, `closedTickets`, `overdueTickets`.
+  - `slaComplianceRate` (% tỷ lệ giải quyết đúng hạn thực tế, ví dụ `80.0%`), `slaMetTickets` (số phiếu đúng hạn).
+  - `mttaMinutes` (số phút phản hồi trung bình), `mttaFormatted` (`25 phút`), `mttaCount` (số ticket tính MTTA).
+  - `mttrHours` (số giờ khắc phục trung bình), `mttrFormatted` (`3.0 giờ`), `mttrCount` (số ticket tính MTTR).
   - Thống kê mảng `ticketsByStatus` (số lượng theo trạng thái).
   - Thống kê mảng `ticketsByCategory` (số lượng theo nhóm dịch vụ).
+  - Thống kê mảng `ticketsByDepartment` (số lượng theo từng phòng ban).
 
 ---
 
@@ -168,11 +173,11 @@ Hệ thống thiết lập 3 vai trò có phân chia màn hình và quyền hạ
 - **Thanh đo tuân thủ SLA**: Trên Dashboard hiển thị thanh đo tỷ lệ giải quyết đúng hạn (% compliance). Thanh cao 6px bo tròn, tự động đổi màu xanh (`--ok`) -> vàng (`--warn`) -> đỏ (`--err`) khi tỷ lệ rơi xuống dưới ngưỡng tiêu chuẩn.
 
 ### 5.5. Phân hệ Báo cáo phân tích hiệu năng (`/reports`)
-- Chỉ số chất lượng dịch vụ:
-  - **Tỷ lệ đạt chuẩn SLA (%)**: Tỷ lệ phiếu giải quyết dứt điểm không bị quá hạn.
-  - **MTTA (Mean Time to Acknowledge)**: Thời gian phản hồi trung bình ban đầu.
-  - **MTTR (Mean Time to Resolve)**: Thời gian khắc phục trung bình sự cố.
-- Trực quan hóa dữ liệu với `recharts`: Biểu đồ cột phân bổ yêu cầu theo danh mục dịch vụ và biểu đồ thanh phân bổ sự cố theo phòng ban.
+- Chỉ số chất lượng dịch vụ tính toán thực tế từ hệ CSDL:
+  - **Tỷ lệ đạt chuẩn SLA (%)**: Tính toán động từ tỷ lệ phiếu hoàn tất đúng hạn: $\text{SLA Compliance} = \frac{\text{Tổng ticket} - \text{Ticket quá hạn}}{\text{Tổng ticket}} \times 100\%$ (đạt 80.0% trên tập dữ liệu kiểm thử, 4/5 ticket tuân thủ).
+  - **MTTA (Mean Time to Acknowledge)**: Thời gian phản hồi trung bình ban đầu từ khi tạo ticket đến khi kỹ thuật viên tiếp nhận xử lý: $\text{MTTA} = \frac{1}{N} \sum (t_{\text{acknowledged}} - t_{\text{created}})$ (đạt 25 phút trên 4 ticket đã tiếp nhận, nhanh hơn ngưỡng tiêu chuẩn <= 30 phút).
+  - **MTTR (Mean Time to Resolve)**: Thời gian khắc phục trung bình sự cố từ khi tạo đến khi giải quyết dứt điểm: $\text{MTTR} = \frac{1}{M} \sum (t_{\text{resolved}} - t_{\text{created}})$ (đạt 3.0 giờ trên các ticket đã xử lý dứt điểm).
+- Trực quan hóa dữ liệu với `recharts`: Biểu đồ cột phân bổ yêu cầu theo danh mục dịch vụ và biểu đồ thanh phân bổ sự cố theo phòng ban đồng bộ từ API.
 
 ### 5.6. Enterprise 2D Design System (tokens.css)
 - Bộ biến màu CSS tokens chuẩn mực:

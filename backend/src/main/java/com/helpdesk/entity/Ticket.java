@@ -59,6 +59,12 @@ public class Ticket {
 
     private LocalDateTime dueDate;
 
+    private LocalDateTime acknowledgedAt;
+
+    private LocalDateTime resolvedAt;
+
+    private LocalDateTime closedAt;
+
     @Column(nullable = false)
     @Builder.Default
     private Boolean isOverdue = false;

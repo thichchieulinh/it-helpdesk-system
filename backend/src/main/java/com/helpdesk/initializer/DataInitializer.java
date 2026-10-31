@@ -115,7 +115,9 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Da khoi tao 4 SLA Policy thanh cong.");
 
         // 4. Khoi tao 5 Ticket mau da dang trang thai
-        // Ticket 1: OPEN - CRITICAL - Qua han (isOverdue = true)
+        LocalDateTime now = LocalDateTime.now();
+
+        // Ticket 1: OPEN - CRITICAL - Qua han (isOverdue = true, chua tiep nhan)
         Ticket ticket1 = Ticket.builder()
                 .ticketCode("HD-2026-0001")
                 .title("Sập kết nối mạng Internet và LAN tầng 3 văn phòng kế toán")
@@ -125,12 +127,15 @@ public class DataInitializer implements CommandLineRunner {
                 .category(catNetwork)
                 .requester(employee)
                 .assignee(null)
-                .createdAt(LocalDateTime.now().minusHours(4))
-                .dueDate(LocalDateTime.now().minusHours(2)) // Qua han 2 gio
+                .createdAt(now.minusHours(4))
+                .dueDate(now.minusHours(2)) // Qua han 2 gio
+                .acknowledgedAt(null)
+                .resolvedAt(null)
+                .closedAt(null)
                 .isOverdue(true)
                 .build();
 
-        // Ticket 2: IN_PROGRESS - HIGH - Chua qua han
+        // Ticket 2: IN_PROGRESS - HIGH - Chua qua han (tiep nhan sau 24 phut)
         Ticket ticket2 = Ticket.builder()
                 .ticketCode("HD-2026-0002")
                 .title("Máy in HP LaserJet phòng kế toán kẹt giấy liên tục và báo lỗi Drum")
@@ -140,12 +145,15 @@ public class DataInitializer implements CommandLineRunner {
                 .category(catHardware)
                 .requester(employee)
                 .assignee(agent)
-                .createdAt(LocalDateTime.now().minusHours(3))
-                .dueDate(LocalDateTime.now().plusHours(5))
+                .createdAt(now.minusHours(3))
+                .dueDate(now.plusHours(5))
+                .acknowledgedAt(now.minusHours(3).plusMinutes(24))
+                .resolvedAt(null)
+                .closedAt(null)
                 .isOverdue(false)
                 .build();
 
-        // Ticket 3: IN_PROGRESS - MEDIUM - Chua qua han
+        // Ticket 3: IN_PROGRESS - MEDIUM - Chua qua han (tiep nhan sau 18 phut)
         Ticket ticket3 = Ticket.builder()
                 .ticketCode("HD-2026-0003")
                 .title("Cài đặt và cấu hình phần mềm MISA SME 2026 cho nhân sự mới")
@@ -155,12 +163,15 @@ public class DataInitializer implements CommandLineRunner {
                 .category(catSoftware)
                 .requester(employee)
                 .assignee(agent)
-                .createdAt(LocalDateTime.now().minusHours(8))
-                .dueDate(LocalDateTime.now().plusHours(16))
+                .createdAt(now.minusHours(8))
+                .dueDate(now.plusHours(16))
+                .acknowledgedAt(now.minusHours(8).plusMinutes(18))
+                .resolvedAt(null)
+                .closedAt(null)
                 .isOverdue(false)
                 .build();
 
-        // Ticket 4: RESOLVED - LOW
+        // Ticket 4: RESOLVED - LOW (tiep nhan sau 32 phut, giai quyet sau 3.75h)
         Ticket ticket4 = Ticket.builder()
                 .ticketCode("HD-2026-0004")
                 .title("Tài khoản email Outlook báo dung lượng hòm thư vượt mức 95%")
@@ -170,12 +181,15 @@ public class DataInitializer implements CommandLineRunner {
                 .category(catCloud)
                 .requester(employee)
                 .assignee(agent)
-                .createdAt(LocalDateTime.now().minusDays(2))
-                .dueDate(LocalDateTime.now().minusHours(10))
+                .createdAt(now.minusDays(2))
+                .dueDate(now.minusHours(10))
+                .acknowledgedAt(now.minusDays(2).plusMinutes(32))
+                .resolvedAt(now.minusDays(2).plusHours(3).plusMinutes(45))
+                .closedAt(null)
                 .isOverdue(false)
                 .build();
 
-        // Ticket 5: CLOSED - HIGH
+        // Ticket 5: CLOSED - HIGH (tiep nhan sau 26 phut, giai quyet sau 2h 15m, dong sau 2.5h)
         Ticket ticket5 = Ticket.builder()
                 .ticketCode("HD-2026-0005")
                 .title("Cấp lại quyền truy cập và mở khóa VPN làm việc từ xa")
@@ -185,8 +199,11 @@ public class DataInitializer implements CommandLineRunner {
                 .category(catNetwork)
                 .requester(employee)
                 .assignee(admin)
-                .createdAt(LocalDateTime.now().minusDays(3))
-                .dueDate(LocalDateTime.now().minusDays(2))
+                .createdAt(now.minusDays(3))
+                .dueDate(now.minusDays(2))
+                .acknowledgedAt(now.minusDays(3).plusMinutes(26))
+                .resolvedAt(now.minusDays(3).plusHours(2).plusMinutes(15))
+                .closedAt(now.minusDays(3).plusHours(2).plusMinutes(30))
                 .isOverdue(false)
                 .build();
 

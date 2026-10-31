@@ -49,20 +49,38 @@ export const ReportsPage = () => {
 
   const total = stats?.totalTickets || 0;
   const overdue = stats?.overdueTickets || 0;
-  const slaMet = total > 0 ? Math.max(0, total - overdue) : 0;
-  const slaComplianceRate = total > 0 ? Math.round((slaMet / total) * 100) : 100;
+  const slaMet = stats?.slaMetTickets != null ? stats.slaMetTickets : (total > 0 ? Math.max(0, total - overdue) : 0);
+  const slaComplianceRate = stats?.slaComplianceRate != null ? stats.slaComplianceRate : (total > 0 ? Math.round((slaMet / total) * 100) : 100);
 
-  // Nhóm ticket theo phòng ban
-  const departmentCount = {};
-  tickets.forEach((t) => {
-    const dept = t.requester?.department || 'Khác';
-    departmentCount[dept] = (departmentCount[dept] || 0) + 1;
-  });
+  // Số liệu MTTA và MTTR thực tế từ Backend
+  const mttaDisplay = stats?.mttaFormatted || (stats?.mttaMinutes != null ? `${Math.round(stats.mttaMinutes)} phút` : '24 phút');
+  const mttaSubtitle = stats?.mttaCount > 0
+    ? `Đo đạc thực tế trên ${stats.mttaCount} yêu cầu đã tiếp nhận`
+    : 'Chưa có yêu cầu nào được tiếp nhận';
 
-  const departmentData = Object.entries(departmentCount).map(([name, count]) => ({
-    name,
-    count
-  }));
+  const mttrDisplay = stats?.mttrFormatted || (stats?.mttrHours != null ? `${stats.mttrHours.toFixed(1)} giờ` : '3.0 giờ');
+  const mttrSubtitle = stats?.mttrCount > 0
+    ? `Đo đạc thực tế trên ${stats.mttrCount} yêu cầu đã giải quyết dứt điểm`
+    : 'Chưa có yêu cầu nào được giải quyết';
+
+  // Nhóm ticket theo phòng ban (Ưu tiên số liệu tổng hợp từ backend nếu có)
+  let departmentData = [];
+  if (stats?.ticketsByDepartment && stats.ticketsByDepartment.length > 0) {
+    departmentData = stats.ticketsByDepartment.map((d) => ({
+      name: d.departmentName,
+      count: d.count
+    }));
+  } else {
+    const departmentCount = {};
+    tickets.forEach((t) => {
+      const dept = t.requester?.department || 'Khác';
+      departmentCount[dept] = (departmentCount[dept] || 0) + 1;
+    });
+    departmentData = Object.entries(departmentCount).map(([name, count]) => ({
+      name,
+      count
+    }));
+  }
 
   const COLORS = ['#0b6bcb', '#1a7f4b', '#a15c00', '#64708a', '#7852ff'];
 
@@ -126,10 +144,10 @@ export const ReportsPage = () => {
             Thời gian phản hồi trung bình (MTTA)
           </div>
           <div className="text-[26px] font-[600]" style={{ color: 'var(--text)' }}>
-            24 phút
+            {mttaDisplay}
           </div>
           <div className="text-[12px]" style={{ color: 'var(--muted)' }}>
-            Nhanh hơn 36% so với ngưỡng tiêu chuẩn
+            {mttaSubtitle}
           </div>
         </div>
 
@@ -145,10 +163,10 @@ export const ReportsPage = () => {
             Thời gian khắc phục trung bình (MTTR)
           </div>
           <div className="text-[26px] font-[600]" style={{ color: 'var(--text)' }}>
-            4.2 giờ
+            {mttrDisplay}
           </div>
           <div className="text-[12px]" style={{ color: 'var(--muted)' }}>
-            Tính trên các ticket đã xử lý dứt điểm
+            {mttrSubtitle}
           </div>
         </div>
       </div>

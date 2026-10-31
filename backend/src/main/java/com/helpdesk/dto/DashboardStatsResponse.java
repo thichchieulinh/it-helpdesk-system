@@ -20,8 +20,21 @@ public class DashboardStatsResponse {
     private long closedTickets;
     private long overdueTickets;
 
+    // Chi so SLA, MTTA, MTTR tinh toan thuc te
+    private Double slaComplianceRate;
+    private Long slaMetTickets;
+
+    private Double mttaMinutes;
+    private String mttaFormatted;
+    private Long mttaCount;
+
+    private Double mttrHours;
+    private String mttrFormatted;
+    private Long mttrCount;
+
     private List<StatusMetric> ticketsByStatus;
     private List<CategoryMetric> ticketsByCategory;
+    private List<DepartmentMetric> ticketsByDepartment;
 
     @Data
     @NoArgsConstructor
@@ -39,6 +52,15 @@ public class DashboardStatsResponse {
     @Builder
     public static class CategoryMetric {
         private String categoryName;
+        private long count;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class DepartmentMetric {
+        private String departmentName;
         private long count;
     }
 }

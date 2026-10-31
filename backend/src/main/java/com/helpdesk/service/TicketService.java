@@ -131,14 +131,46 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy Ticket với ID: " + id));
 
+        LocalDateTime now = LocalDateTime.now();
+
         if (req.getStatus() != null) {
-            ticket.setStatus(req.getStatus());
+            TicketStatus newStatus = req.getStatus();
+            ticket.setStatus(newStatus);
+
+            if (newStatus == TicketStatus.IN_PROGRESS) {
+                if (ticket.getAcknowledgedAt() == null) {
+                    ticket.setAcknowledgedAt(now);
+                }
+                // Nếu mở lại từ RESOLVED / CLOSED thì xóa thời điểm giải quyết
+                ticket.setResolvedAt(null);
+                ticket.setClosedAt(null);
+            } else if (newStatus == TicketStatus.RESOLVED) {
+                if (ticket.getResolvedAt() == null) {
+                    ticket.setResolvedAt(now);
+                }
+                if (ticket.getAcknowledgedAt() == null) {
+                    ticket.setAcknowledgedAt(now);
+                }
+            } else if (newStatus == TicketStatus.CLOSED) {
+                if (ticket.getClosedAt() == null) {
+                    ticket.setClosedAt(now);
+                }
+                if (ticket.getResolvedAt() == null) {
+                    ticket.setResolvedAt(now);
+                }
+                if (ticket.getAcknowledgedAt() == null) {
+                    ticket.setAcknowledgedAt(now);
+                }
+            }
         }
 
         if (req.getAssigneeId() != null) {
             User assignee = userRepository.findById(req.getAssigneeId())
                     .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy Kỹ thuật viên với ID: " + req.getAssigneeId()));
             ticket.setAssignee(assignee);
+            if (ticket.getAcknowledgedAt() == null) {
+                ticket.setAcknowledgedAt(now);
+            }
         }
 
         ticket.checkOverdue();
