@@ -11,7 +11,7 @@ Hệ thống hỗ trợ tiếp nhận sự cố kỹ thuật CNTT, phân loại 
 - **Backend**:
   - Java 17 LTS, Spring Boot 3.3.5
   - Spring Data JPA, Hibernate
-  - H2 Database (File persistent: `./data/helpdesk_db`)
+  - PostgreSQL 18 (Database: `helpdesk_db`, Port 5432)
   - Jakarta Bean Validation, Lombok
   - Spring Task Scheduling (`@Scheduled`)
 - **Frontend**:
@@ -65,7 +65,7 @@ run-project.bat
 cd backend
 ./mvnw spring-boot:run
 # Backend lắng nghe tại: http://localhost:8080
-# H2 Console tại: http://localhost:8080/h2-console
+# Kết nối PostgreSQL tại: localhost:5432/helpdesk_db (User: postgres, Password: 1)
 ```
 
 **2. Khởi chạy Frontend:**

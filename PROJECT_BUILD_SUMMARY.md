@@ -18,8 +18,7 @@ Tài liệu này tổng hợp toàn bộ thông tin kỹ thuật, kiến trúc h
 - **Ngôn ngữ**: Java 17 LTS.
 - **Framework**: Spring Boot 3.3.5.
 - **Tầng dữ liệu (ORM)**: Spring Data JPA, Hibernate.
-- **Cơ sở dữ liệu**: H2 Database cấu hình lưu trữ bền vững dạng file cục bộ (`jdbc:h2:file:./data/helpdesk_db`).
-  - H2 Web Console: `http://localhost:8080/h2-console` (User: `sa`, Password: rỗng).
+- **Cơ sở dữ liệu**: Hệ quản trị cơ sở dữ liệu quan hệ chuyên nghiệp **PostgreSQL 18** (`jdbc:postgresql://localhost:5432/helpdesk_db`, User: `postgres`).
 - **Thư viện bổ trợ**:
   - `Lombok`: Giảm thiểu boilerplate code (`@Getter`, `@Setter`, `@Builder`, `@RequiredArgsConstructor`).
   - `Jakarta Validation`: Kiểm tra ràng buộc dữ liệu đầu vào (`@NotBlank`, `@NotNull`, `@Valid`).
@@ -234,5 +233,5 @@ ProjectTTDN/
 - **Môi trường thử nghiệm**: Máy trạm phát triển local (Intel Core i7, RAM 16GB, Windows 11, Google Chrome v120).
 - **Bộ kiểm thử chức năng**: 12/12 ca kiểm thử cốt lõi (TC01 -> TC12) đạt kết quả 100%.
 - **Thời gian phản hồi API (Latency)**: Đo đạc thực tế qua Chrome Network Tab dao động từ **15ms đến 45ms** trên môi trường local.
-- **Khả năng tự phục hồi**: Tắt máy chủ và khởi động lại, cơ sở dữ liệu H2 lưu file vật lý bền vững `./data/helpdesk_db` giữ nguyên 100% dữ liệu ticket, người dùng và lịch sử bình luận.
+- **Khả năng tự phục hồi & toàn vẹn**: Tắt máy chủ và khởi động lại, cơ sở dữ liệu PostgreSQL lưu trữ bền vững giữ nguyên 100% dữ liệu ticket, người dùng và lịch sử bình luận.
 - **Hạn chế kỹ thuật cần ghi nhận**: Chưa thử nghiệm tải đồng thời hàng nghìn kết nối qua mạng Internet công cộng; chưa tích hợp mã hóa JWT có thời hạn hết hạn ngắn (hiện dùng phiên đăng nhập Context).

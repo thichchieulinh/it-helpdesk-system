@@ -597,7 +597,7 @@ def build_signlite_style_report():
     add_table_caption(doc, "Bảng 2.3 Công nghệ và vai trò trong HelpdeskIT")
     tb23_data = [
         ("Backend", "Java 17 LTS, Spring Boot 3.3.5; xử lý HTTP REST API và nghiệp vụ."),
-        ("Dữ liệu", "Spring Data JPA, Hibernate, H2 Database lưu file vật lý bền vững local."),
+        ("Dữ liệu", "Spring Data JPA, Hibernate, hệ quản trị cơ sở dữ liệu PostgreSQL 18 chuyên nghiệp."),
         ("Giao diện", "ReactJS 18, Vite 5; Single Page Application, điều hướng nhanh không tải lại trang."),
         ("Thiết kế", "Tailwind CSS, tokens.css; Enterprise 2D Design System, font IBM Plex Sans, Light/Dark mode."),
         ("Biểu đồ", "Recharts; trực quan hóa tỷ lệ SLA, so sánh tiến độ và phân bổ sự cố."),
@@ -607,12 +607,12 @@ def build_signlite_style_report():
     create_table_custom(doc, 8, 2, [Inches(1.8), Inches(5.2)], ["Thành phần", "Công nghệ và vai trò"], tb23_data)
 
     add_heading_3(doc, "2.3.2 Phạm vi local và LAN")
-    add_body_p(doc, "Ứng dụng hiện chạy trên Windows tại localhost:8080 cho Backend và localhost:5173 cho Frontend. File WebConfig.java cấu hình mở CORS cho origin 5173 và các dải mạng LAN nội bộ. Dữ liệu H2 được lưu vào file ./data/helpdesk_db giúp bảo toàn dữ liệu khi khởi động lại ứng dụng.")
+    add_body_p(doc, "Ứng dụng hiện chạy trên Windows tại localhost:8080 cho Backend và localhost:5173 cho Frontend. File WebConfig.java cấu hình mở CORS cho origin 5173 và các dải mạng LAN nội bộ. Cơ sở dữ liệu PostgreSQL 18 (database helpdesk_db, port 5432) bảo toàn dữ liệu bền vững và tin cậy khi khởi động lại ứng dụng.")
     add_body_p(doc, "Môi trường HTTP trong mạng nội bộ được dùng để phát triển và kiểm tra luồng hoạt động của hệ thống. Khi mở rộng qua Internet, em dự kiến triển khai trên Linux VPS, dùng Spring Security kết hợp JWT và HTTPS/TLS để bảo vệ giao tiếp.")
 
     add_heading_2(doc, "2.4 Kiến trúc và tổ chức xử lý")
     add_heading_3(doc, "2.4.1 Kiến trúc hệ thống hiện tại")
-    add_body_p(doc, "Kiến trúc HelpdeskIT gồm máy khách ReactJS, máy chủ Spring Boot 3 và cơ sở dữ liệu H2. Máy chủ tổ chức theo mô hình phân tầng: Controller tiếp nhận HTTP Request và validate dữ liệu; Service xử lý nghiệp vụ cốt lõi; Repository thực hiện truy vấn dữ liệu; Entity định nghĩa cấu trúc bảng. Máy khách tương tác qua Axios client định dạng JSON.")
+    add_body_p(doc, "Kiến trúc HelpdeskIT gồm máy khách ReactJS, máy chủ Spring Boot 3 và cơ sở dữ liệu quan hệ PostgreSQL 18. Máy chủ tổ chức theo mô hình phân tầng: Controller tiếp nhận HTTP Request và validate dữ liệu; Service xử lý nghiệp vụ cốt lõi; Repository thực hiện truy vấn dữ liệu; Entity định nghĩa cấu trúc bảng. Máy khách tương tác qua Axios client định dạng JSON.")
 
     add_figure_box(doc, "KIẾN TRÚC HELPDESKIT TRONG MÔI TRƯỜNG LOCAL VÀ LAN", "Hình 2.4 Kiến trúc HelpdeskIT trong môi trường local và LAN")
 
@@ -704,7 +704,7 @@ def build_signlite_style_report():
     create_table_custom(doc, 7, 3, [Inches(1.5), Inches(2.5), Inches(3.0)], ["Nhóm", "Nội dung kiểm tra", "Kết quả và phạm vi"], tb26_data)
 
     add_heading_3(doc, "2.10.2 Đánh giá kết quả và hạn chế")
-    add_body_p(doc, "Trong các lần thử trên Chrome local, thời gian phản hồi của các REST API được ghi nhận dao động từ 15ms đến 45ms, đáp ứng yêu cầu tương tác nhanh. Khi khởi động lại máy chủ, dữ liệu H2 file local bảo toàn 100%.")
+    add_body_p(doc, "Trong các lần thử trên Chrome local, thời gian phản hồi của các REST API được ghi nhận dao động từ 15ms đến 45ms, đáp ứng yêu cầu tương tác nhanh. Khi khởi động lại máy chủ, cơ sở dữ liệu PostgreSQL lưu trữ bền vững bảo toàn 100% dữ liệu.")
     add_body_p(doc, "Những giới hạn cần tiếp tục đánh giá gồm: chưa kiểm thử tải lớn đồng thời hàng nghìn kết nối, chưa tích hợp mã hóa JWT có thời hạn ngắn và chưa triển khai đám mây qua Internet. Các kết quả này là cơ sở để tiếp tục mở rộng đề tài theo định hướng ở Chương 3.")
 
     # ==================== CHƯƠNG 3 ====================

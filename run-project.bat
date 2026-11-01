@@ -24,7 +24,8 @@ echo.
 echo ======================================================================
 echo  Hệ thống đã được bật trong 2 cửa sổ riêng biệt!
 echo  - Giao diện ứng dụng: http://localhost:5173
-echo  - H2 Database Console: http://localhost:8080/h2-console
+echo  - Backend API: http://localhost:8080/api
+echo  - Cơ sở dữ liệu: PostgreSQL (Port 5432, Database: helpdesk_db)
 echo  (Để tắt hệ thống: Đóng 2 cửa sổ đen đang chạy hoặc bấm Ctrl + C)
 echo ======================================================================
 pause
